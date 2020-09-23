@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %} {% block body %}
+<div class="container">
+    <!-- Card -->
+    <div class="card card-cascade wider reverse">
+
+        <!-- Card content -->
+        <div class="card-body card-body-cascade text-center">
+
+            <!-- Title -->
+            <h4 class="card-title"><strong>Question id ~ {{question.pk}}</strong></h4>
+            <!-- Subtitle -->
+            <h6 class="font-weight-bold indigo-text py-2">Categories ~ {% for i in question.category.all %}{{i.name}}, {% endfor %} <span style="font-size:15px;color:black">| Asked by: {{question.user.username}} </span> </h6>
+            <!-- Text -->
+            <h3 class="h3-responsive">{{ question.title }}</h3>
+
+
+            <span style="font-weight: bold; border: black solid 1px ; padding:2px;"> {{ question.upvotes }} Upvotes</span> {% if user.is_authenticated %} {% if not voted %}
+            <a class="px-2  tw-ic" href="{% url 'upvote' question.id %}"><i class="fas fa-plus"></i> Upvote</a> {% else %} <a class="px-2  tw-ic" href="{% url 'upvote' question.id %}"><i class="fas fa-minus"></i> Downvote</a>{% endif %} {% endif %}
+            <!-- 
+            <a class="px-2  fb-ic"><i class="fab fa-facebook-f"></i></a> -->
+
+            <br><br>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                Answer
+              </button>
+
+        </div>
+
+    </div>
+    <br><br> {% for q in answers reversed %}
+    <div class="container">
+        <hr>
+        <h6 class="h6">Answered by {{ q.0.answerer.username }}:</h6>
+        <h5>{{q.0.text}}</h5>
+        <br>
+        <span style="font-weight: bold; border: black solid 1px ; padding:2px;"> {{ q.0.upvotes }} Upvotes</span> {% if user.is_authenticated %} {% if not q.1 %}<a class="px-2  tw-ic" href="{% url 'answer-upvote' q.0.id question.id %}"><i class="fas fa-plus"></i> Upvote</a>        {% else %}<a class="px-2  tw-ic" href="{% url 'answer-upvote' q.0.id question.id %}"><i class="fas fa-minus"></i> Downvote</a>{% endif %} {% endif %}
+
+        <a class="px-2 fa-sm tw-ic"><i class="fab fa-twitter"></i></a>
+
+        <a class="px-2 fa-sm fb-ic"><i class="fab fa-facebook-f"></i></a>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Write an answer...</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="" method="POST">
+                    {% csrf_token %}
+
+                    <div class="md-form">
+                        <textarea id="form7" class="md-textarea form-control" name="text" rows="3"></textarea>
+                        <label for="form7"></label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<br><br> <br><br>{% endblock %}

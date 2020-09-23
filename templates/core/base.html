@@ -1,0 +1,146 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quora Clone</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet"> {% if messages %} {% for message in messages %}
+
+    <script>
+        alert("{{ message }}");
+    </script>
+
+    {% endfor %} {% endif %}
+
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1">
+        <a class="navbar-brand" href="{% url 'home' %}">Forum-Clone</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-5" aria-controls="navbarSupportedContent-5" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-5">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="#">Home
+                <span class="sr-only">(current)</span>
+              </a>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="#">Trending</a>
+                </li> -->
+                <li class="nav-item active" style="margin-right: 30px;">
+                    <a class="nav-link waves-effect waves-light" data-toggle="modal" data-target="#exampleModalCenterHome">Ask a Question</a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Dropdown
+              </a>
+                    <div class="dropdown-menu dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-5">
+                        <a class="dropdown-item waves-effect waves-light" href="#">Action</a>
+                        <a class="dropdown-item waves-effect waves-light" href="#">Another action</a>
+                        <a class="dropdown-item waves-effect waves-light" href="#">Something else here</a>
+                    </div>
+                </li> -->
+                <li class="nav-item">
+                    <!-- Search form -->
+                    <form class="form-inline form-sm active-cyan-2" style="margin-top: 5px;">
+                        <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Find a question" aria-label="Search">
+                        <i class="fas fa-search" style="color:white;" aria-hidden="true"></i>
+                    </form>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto nav-flex-icons">
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light">1
+                        <i class="far fa-bell"></i>
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="#">{{ user.username }}</a>
+                </li>
+                {% endif %}
+                <li class="nav-item avatar dropdown">
+                    <a class="nav-link dropdown-toggle waves-effect waves-light" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" class="rounded-circle z-depth-0" style="height: 28px;" alt="avatar image">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-5">
+                        {% if not user.is_authenticated %}
+                        <a class="dropdown-item waves-effect waves-light" href="{% url 'login' %}">LOGIN</a>
+                        <a class="dropdown-item waves-effect waves-light" href="{% url 'register' %}">SIGNUP</a> {% else %}
+                        <a class="dropdown-item waves-effect waves-light" href="#">YOUR PROFILE</a>
+                        <a class="dropdown-item waves-effect waves-light" href="{% url 'logout' %}">LOGOUT</a> {% endif %}
+
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- /NAVBAR -->
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenterHome" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Ask a question...</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="" method="POST">
+                        {% csrf_token %} {{ form|crispy }}
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% block body %} {% endblock %}
+
+    <!-- Footer -->
+    <footer class="page-footer font-small purple fixed-bottom">
+
+        <!-- Copyright -->
+        <div class="footer-copyright text-center py-3">Coded by :
+            <a href="http://namanmonga13.pythonanywhere.com" target="_blank">Naman Monga</a>
+        </div>
+        <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+</body>
+
+</html>
