@@ -26,14 +26,12 @@
 <body>
     <!-- NAVBAR -->
     <nav class="mb-1 navbar navbar-expand-lg navbar-dark secondary-color lighten-1">
-        <a class="navbar-brand" href="{% url 'home' %}">Forum-Clone</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-5" aria-controls="navbarSupportedContent-5" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand" href="{% url 'home' %}">Forum Clone</a>
+
         <div class="collapse navbar-collapse" id="navbarSupportedContent-5">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link waves-effect waves-light" href="#">Home
+                    <a class="nav-link waves-effect waves-light" href="{% url 'home' %}">Home
                 <span class="sr-only">(current)</span>
               </a>
                 </li>
@@ -54,9 +52,9 @@
                 </li> -->
                 <li class="nav-item">
                     <!-- Search form -->
-                    <form class="form-inline form-sm active-cyan-2" style="margin-top: 5px;">
-                        <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Find a question" aria-label="Search">
-                        <i class="fas fa-search" style="color:white;" aria-hidden="true"></i>
+                    <form class="form-inline form-sm active-cyan-2" style="margin-top: 5px;" method="GET" action="{% url 'search-results' %}">
+                        <input class="form-control form-control-sm mr-3 w-75" type="text" placeholder="Find a question" name="search" aria-label="Search">
+                        <button type="submit"><i class="fas fa-search" style="color:black;" aria-hidden="true"></i></button>
                     </form>
                 </li>
             </ul>
@@ -68,7 +66,7 @@
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link waves-effect waves-light" href="#">{{ user.username }}</a>
+                    <a class="nav-link waves-effect waves-light" href="{% url 'myprofile' %}">{{ user.username }}</a>
                 </li>
                 {% endif %}
                 <li class="nav-item avatar dropdown">

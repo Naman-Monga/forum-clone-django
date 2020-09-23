@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %} {% block body %}
+
+<br>
+<div class="container">
+
+    <form class="form-inline mr-auto mb-4 md-form" method="GET" action="{% url 'search-results' %}">
+
+        <input class="form-control mr-sm-4" type="text" style="width: 100%;" placeholder="Search your question..." value="{{ squery }}" name="search" aria-label="Search">
+        <button class="btn purple-gradient btn-rounded btn-sm my-2" type="submit">Search</button>
+    </form>
+
+
+
+    <br>
+    <h2>Results:</h2>
+    <hr> {% for i in object_list reversed %}
+    <div class="card-body d-flex flex-row">
+
+        <!-- Avatar -->
+        <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-8.jpg" class="rounded-circle mr-3" height="25px" width="25px" alt="avatar">
+
+        <!-- Content -->
+        <div>
+
+            <!-- Title -->
+            <a href="{{ i.get_absolute_url }}">
+                <h4 class="card-title font-weight-bold mb-2">{{ i.title }}</h4>
+            </a>
+            <!-- Subtitle -->
+            <div class="row">{% for j in i.category.all %} {{j.name}} {% endfor %}</div>
+            <p class="card-text"><i class="far fa-clock pr-2"></i>{{ i.time }}</p>
+
+        </div>
+
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

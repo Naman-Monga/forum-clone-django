@@ -1,5 +1,5 @@
 from django.db import models
-from django.shortcuts import reverse
+from django.shortcuts import reverse, redirect
 from django.contrib.auth.models import User
 # Create your models here.
 class Category(models.Model):
@@ -50,6 +50,8 @@ class answer(models.Model):
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fname = models.CharField(max_length = 100, null=True)
+    lname = models.CharField(max_length = 100, null = True)
     ques_upvoted = models.ManyToManyField(question,null=True, blank=True)
     ans_upvoted = models.ManyToManyField(answer,null=True, blank=True)
     

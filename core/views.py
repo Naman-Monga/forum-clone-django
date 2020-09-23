@@ -31,6 +31,9 @@ def question_detail(request, pk):
     answers = models.answer.objects.filter(question = question)
     myuser = models.UserProfile.objects.filter(user = request.user)[0]
     voted = myuser.check_q(question)
+    asked = False
+    if question.user == request.user:
+        asked = True
     voted_a = list()
     for a in answers:
         voted_a.append(myuser.check_a(a))
@@ -39,6 +42,7 @@ def question_detail(request, pk):
         'question':question,
         'answers':answers,
         'voted':voted,
+        'asked':asked,
     }
 
     if request.method == "POST":
@@ -79,3 +83,47 @@ def ansUpvoter(request, pk, pk2):
     myuser.save()
     answer.save()
     return redirect(question.get_absolute_url())
+
+def delete_ques(request, pk):
+    quest = models.question.objects.filter(pk=pk)[0]
+    if request.user == quest.user:
+        quest.delete()
+    return redirect('home')
+
+class SearchView(ListView):
+    model = models.question
+    template_name = "core/search_result.html"
+
+    def get_queryset(self):
+        if self.request.GET != None:
+            query = self.request.GET.get('search')
+            return models.question.objects.filter(title__icontains=query)
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['squery'] = self.request.GET.get('search')
+        return context
+
+def profilePage(request):
+    profile = models.UserProfile.objects.get(user = request.user)
+    qnumber = profile.ques_upvoted.count()
+    qasked = models.question.objects.filter(user = request.user)
+    answered = models.answer.objects.filter(answerer = request.user)
+    qanswered = list()
+    for l in answered:
+        if not l.question in qanswered:
+            qanswered.append(l.question)
+    qans_count = len(qanswered)
+    print(qans_count)
+    context = {
+        'profile':profile,
+        'qnumber':qnumber,
+        'qasked':qasked,
+        'qanswered':qanswered,
+        'qans_count':qans_count,
+    }
+    return render(request, 'core/profile-page.html', context)
+
+def editProfile(request):
+    profile = models.UserProfile.objects.get(user=request.user)
+    
