@@ -1,4 +1,4 @@
-#forum-django-clone
+#forum-clone-django
 
 A django based forum with functionalities including:
 1. User Registeration and Authentication + Send a confirmation mail to the new user
